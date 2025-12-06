@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Navigation Bar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Upper Navigation Bar - Always Visible */
+        .top-nav {
+            background: #2c3e50;
+            color: white;
+            padding: 0.5rem 2rem;
+            font-size: 0.9rem;
+        }
+
+        .top-nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .top-nav-left {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .top-nav-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .top-nav a:hover {
+            color: #3498db;
+        }
+
+        /* Main Navigation Bar */
+        .main-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .main-nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .main-nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .main-nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 1.05rem;
+        }
+
+        .main-nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger Menu (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .content h1 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .content h2 {
+            color: #764ba2;
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+        }
+
+        .content p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Mobile Styles - Media Query */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            /* Top nav adjustments for mobile */
+            .top-nav {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .top-nav-left, .top-nav-right {
+                gap: 1rem;
+            }
+
+            .top-nav-left span:not(:first-child),
+            .top-nav-right a:last-child {
+                display: none;
+            }
+
+            /* Main header adjustments */
+            .main-header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            /* Sidebar Navigation for Mobile */
+            .main-nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                flex-direction: column;
+                background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+                width: 280px;
+                height: 100vh;
+                padding: 5rem 2rem 2rem;
+                gap: 0;
+                transition: left 0.4s ease;
+                box-shadow: 2px 0 15px rgba(0,0,0,0.3);
+                overflow-y: auto;
+            }
+
+            .main-nav-menu.active {
+                left: 0;
+            }
+
+            .main-nav-menu li {
+                margin-bottom: 0.5rem;
+            }
+
+            .main-nav-menu a {
+                display: block;
+                padding: 1.2rem;
+                border-radius: 8px;
+                font-size: 1.15rem;
+                border: 1px solid rgba(255,255,255,0.2);
+            }
+
+            /* Hamburger Animation */
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            /* Overlay */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s ease;
+                z-index: 999;
+            }
+
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            /* Content adjustments */
+            .content {
+                padding: 0 1rem;
+            }
+
+            .content h1 {
+                font-size: 2rem;
+            }
+
+            .content h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Upper Navigation Bar (Always Visible) -->
+    <nav class="top-nav">
+        <div class="top-nav-container">
+            <div class="top-nav-left">
+                <span>📧 info@website.com</span>
+                <span>📞 +234 09162245980</span>
+            </div>
+            <div class="top-nav-right">
+                <a href="#login">Login</a>
+                <a href="REGISTRATION">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Header with Navigation -->
+    <header class="main-header">
+        <div class="main-nav-container">
+            <div class="logo">USB CORPORATION</div>
+            
+            <!-- Hamburger Menu (Mobile Only) -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Main Navigation Menu -->
+            <ul class="main-nav-menu" id="mainNavMenu">
+                <li><a href="HOMEPAGE.HTML">Home</a></li>
+                <li><a href="ABOUTUS.HTML">About Us</a></li>
+                <li><a href="SERVICESUS.HTML">Services</a></LI>
+                <li><a href="CONTACTUS.HTML">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>FINSAVVY COMPANY</h1>
+        <p>This website features two distinct navigation bars with responsive behavior:</p>
+
+        <div class="feature-box">
+            <h2>THE BEST FINANCIAL CORPORATION IN THE WORLD </h2>
+            <p><strong>Always visible on all screen sizes</strong></p>
+            <ul style="color: #666; margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Contains contact information and quick links</li>
+                <li>Shows email and phone on desktop</li>
+                <li>Displays login/register options</li>
+                <li>Simplified on mobile but remains visible</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h2>WHAT WE OFFER IN FINSAVVY CORPORATION</h2>
+            <p><strong>Adapts based on screen size</strong></p>
+            <ul style="color: #666; margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li><strong>Desktop:</strong> Horizontal navigation with hover effects</li>
+                <li><strong>Mobile:</strong> Converts to a slide-out sidebar from the left</li>
+                <li>Hamburger menu appears on mobile devices</li>
+                <li>Smooth animations and transitions</li>
+            </ul>
+        </div>
+
+        <h2>📱 Try It Out!</h2>
+        <p>Resize your browser window to see how the navigation adapts. The upper bar stays visible while the main navigation transforms into a sidebar on smaller screens.</p>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const mainNavMenu = document.getElementById('mainNavMenu');
+        const overlay = document.getElementById('overlay');
+        const navLinks = document.querySelectorAll('.main-nav-menu a');
+
+        // Toggle sidebar menu
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mainNavMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mainNavMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close menu when clicking a navigation link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mainNavMenu.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
